@@ -1,0 +1,7 @@
+.latex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "LaTeX-variant", sans-serif;
+  font-size: 1.05rem;
+}

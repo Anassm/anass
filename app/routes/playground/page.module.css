@@ -1,0 +1,9 @@
+.container {
+  flex-direction: column;
+  height: 100vh;
+}
+
+.container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}

@@ -1,0 +1,17 @@
+.container {
+  flex-direction: column;
+  height: 100vh;
+}
+
+.container:nth-child(-1) {
+  margin-top: 20px;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: bold;
+}
+
+.latex {
+    margin-top: 3rem;
+}
