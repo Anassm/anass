@@ -1,11 +1,11 @@
 import styles from "./sidebar.module.css";
 import { NAV_LINKS } from "~/lib/constants";
 import { NavLink } from "react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 export default function SideBar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const navigationLinks: ReactNode = NAV_LINKS.map((link, index) => {
     const Icon = link.icon;

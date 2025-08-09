@@ -1,6 +1,6 @@
 import { FaLinkedin, FaDiscord, FaGithub } from "react-icons/fa";
 // import { FaXTwitter } from "react-icons/fa6";
-import { HiOutlineMail } from "react-icons/hi";
+import { MdEmail } from "react-icons/md";
 import styles from "./socials.module.css";
 
 export default function Socials() {
@@ -19,7 +19,7 @@ export default function Socials() {
         <FaDiscord />
       </a>
       <a href="mailto:a.moussadi03@gmail.com">
-        <HiOutlineMail />
+        <MdEmail />
       </a>
     </div>
   );
