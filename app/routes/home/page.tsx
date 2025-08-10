@@ -15,10 +15,6 @@ export default function Home() {
     <div className={`flex-center container--narrow ${styles.container}`}>
       <h1 className={styles.title}>Anass Moussadi</h1>
       <Socials />
-      TODO: Toggle knop rechts van de sidebar zetten en het mee laten bewegen
-      met de sidebar? Wanneer sidebar hidden is, alleen knop... klik op knop →
-      sidebar te zien. In dat geval conditional andere toggle icon aantonen
-      gebaseerd of het open is of niet.
       <div className={styles.latex}>
         <Latex />
       </div>

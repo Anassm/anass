@@ -8,9 +8,20 @@
   font-display: normal;
 }
 
+:root {
+  --base-font-size: 18px;
+}
+
 body {
   background: #121212;
   color: #e0e0e0;
+}
+
+body,
+p,
+span,
+div {
+  font-size: inherit;
 }
 
 /* Utility classes */
