@@ -9,16 +9,14 @@ export type NavLink = {
 
 // Graph node
 // A node will be a route people can interact and navigate to
-// Keeping the possibility open to have a fun node by allowing string value
-export interface INode<T extends RouteObject | string> {
+export interface INode {
   readonly id: string;
-  readonly value: T;
-  readonly neighbors: readonly INode<T>[];
+  readonly value: RouteObject;
+  readonly neighbors: readonly INode[];
 }
 
 // React Node component props
-export type NodeProps<T extends RouteObject | string> = {
-  node: INode<T>;
+export type NodeProps = {
+  node: INode;
   position: [number, number, number];
-  onClick?: () => void;
 };
