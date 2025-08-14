@@ -1,19 +1,37 @@
-import styles from "./graph.module.css";
 import Node from "./node/node";
-import routes from "../../routes";
-import type { INode } from "~/lib/types";
-import type { RouteObject } from "react-router";
+import type { INode, IRead } from "~/lib/types";
+import { Vector3 } from "three";
 
-export default function Graph() {
-  const nodes: INode[] = routes.map((route) => ({
-    id: route.path ?? "unknown",
-    value: route as RouteObject,
+export default function Graph({ data }: { data: IRead[] }) {
+  console.log(data);
+  const height: number = 20;
+  const width: number = 20;
+
+  const nodes: INode[] = data.map((read) => ({
+    id: read.id,
+    type: read.type,
+    title: read.title,
+    cluster: read.metadata?.cluster,
     neighbors: [],
   }));
 
-  const displayNodes: React.ReactElement[] = nodes.map((node, index) => (
-    <Node key={node.id} node={node} position={[index * 5, 0, 0]} />
+  const displayNodes: React.ReactElement[] = nodes.map((node) => (
+    <Node
+      key={node.id}
+      node={node}
+      position={
+        new Vector3(
+          Math.random() * width - width / 2,
+          Math.random() * height - height / 2,
+          -20
+        )
+      }
+    />
   ));
 
-  return <group>{displayNodes}</group>;
+  return (
+    <>
+      <group>{displayNodes}</group>
+    </>
+  );
 }

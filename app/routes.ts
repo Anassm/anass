@@ -9,5 +9,6 @@ export default [
   index("routes/home/page.tsx"),
   route("about", "routes/about/page.tsx"),
   route("library", "routes/library/page.tsx"),
+  route("library/:type/:slug", "routes/library/read/page.tsx"),
   route("playground", "routes/playground/page.tsx"),
 ] satisfies RouteConfig;

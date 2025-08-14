@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import type { RouteObject } from "react-router";
+import type { Vector3 } from "three";
 
 export type NavLink = {
   label: string;
@@ -7,16 +7,45 @@ export type NavLink = {
   icon?: IconType;
 };
 
-// Graph node
-// A node will be a route people can interact and navigate to
+// --- Library ---
+export interface IRead {
+  id: string;
+  type: "blog" | "post" | "note";
+  title: string;
+  content: string;
+  metadata?: {
+    tags?: string[];
+    cluster?: string;
+    references?: string[];
+    createdAt?: string;
+    updatedAt?: string;
+  };
+}
+
 export interface INode {
-  readonly id: string;
-  readonly value: RouteObject;
-  readonly neighbors: readonly INode[];
+  id: IRead["id"];
+  type: IRead["type"];
+  title: string;
+  cluster?: string;
+  neighbors?: string[];
+}
+
+export interface IEdge {
+  from: string;
+  to: string;
+  type: "core" | "reference";
+  directional: boolean;
 }
 
 // React Node component props
 export type NodeProps = {
   node: INode;
-  position: [number, number, number];
+  position: Vector3;
+};
+
+// React Edge component props
+export type EdgeProps = {
+  start: Vector3;
+  end: Vector3;
+  type: IEdge["type"];
 };

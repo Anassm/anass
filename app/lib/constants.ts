@@ -8,5 +8,5 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Home", path: "/", icon: FaHouse },
   { label: "About", path: "/about", icon: PiHandWavingFill },
   { label: "Library", path: "/library", icon: IoLibrary },
-  { label: "Playground", path: "/playground", icon: BsBadge3dFill },
+  // { label: "Playground", path: "/playground", icon: BsBadge3dFill },
 ];
