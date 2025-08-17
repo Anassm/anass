@@ -9,10 +9,11 @@ export type NavLink = {
 
 // --- Library ---
 export interface IRead {
-  id: string;
-  type: "blog" | "post" | "note";
   title: string;
+  type: "blog" | "post" | "note" | "root";
   content: string;
+  filename: string;
+  slug: string;
   metadata?: {
     tags?: string[];
     cluster?: string;
@@ -23,9 +24,9 @@ export interface IRead {
 }
 
 export interface INode {
-  id: IRead["id"];
-  type: IRead["type"];
   title: string;
+  type: IRead["type"];
+  navigation: string;
   cluster?: string;
   neighbors?: string[];
 }
@@ -41,6 +42,7 @@ export interface IEdge {
 export type NodeProps = {
   node: INode;
   position: Vector3;
+  color: string;
 };
 
 // React Edge component props

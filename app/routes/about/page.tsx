@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 
 export default function About() {
   return (
-    <div className={`container--narrow flex-center ${styles.container}`}>
+    <div className={`container-sm flex-center ${styles.container}`}>
       <h1>Hi</h1> <br />
       <p>
         Just a chill guy from The Netherlands, born in 2003 who enjoys games,

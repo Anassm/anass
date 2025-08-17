@@ -52,17 +52,17 @@ export default function SideBar() {
         <ul className={`flex-center ${styles.navigationGroup}`}>
           {navigationLinks}
         </ul>
-        <span className={styles.github}>
+        {/* <span className={styles.github}>
           <UpdateStatus />
-        </span>
+        </span> */}
       </div>
-      <RxHamburgerMenu
+      {/* <RxHamburgerMenu
         size={60}
         className={styles.hamburger}
         onClick={() => {
           setIsOpen((prev) => !prev);
         }}
-      />
+      /> */}
     </>
   );
 }

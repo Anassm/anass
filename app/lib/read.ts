@@ -31,16 +31,21 @@ async function getMetaDataOnly(filePath: string): Promise<IRead> {
   const yamlData = yaml.load(yamlString) as any;
 
   return {
-    id: path.basename(filePath, path.extname(filePath)),
-    type: yamlData.type,
     title: yamlData.title,
+    type: yamlData.type,
     content: "",
+    filename: path.basename(filePath),
+    slug: yamlData.title
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, ""),
     metadata: {
       tags: yamlData.tags || [],
       cluster: yamlData.cluster || "",
       references: yamlData.references || [],
-      createdAt: yamlData.createdAt || "ERROR",
-      updatedAt: yamlData.createdAt || "ERROR",
+      createdAt: yamlData.createdAt || "unknown",
+      updatedAt: yamlData.createdAt || "unknown",
     },
   };
 }
@@ -53,24 +58,39 @@ export async function getAllReadMetaData(folderPath: string): Promise<IRead[]> {
   );
 }
 
-export function getReadContent(folderPath: string, fileName: string): IRead {
-  const filePath = path.join(folderPath, fileName);
+export function getReadContent(folderPath: string, fileTitle: string): IRead {
+  const filePath = path.join(folderPath, fileTitle);
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const parsed = matter(fileContent);
 
-  const metaData = parsed.data as any;
+  const yamlData = parsed.data as any;
 
   return {
-    id: path.basename(filePath, path.extname(filePath)),
-    type: metaData.type,
-    title: metaData.title,
+    title: yamlData.title,
+    type: yamlData.type,
     content: parsed.content.trim(),
+    filename: path.basename(filePath),
+    slug: yamlData.title
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, ""),
     metadata: {
-      tags: metaData.tags || [],
-      cluster: metaData.cluster || "",
-      references: metaData.references || [],
-      createdAt: metaData.createdAt || "ERROR",
-      updatedAt: metaData.updatedAt || "ERROR",
+      tags: yamlData.tags || [],
+      cluster: yamlData.cluster || "",
+      references: yamlData.references || [],
+      createdAt: yamlData.createdAt || "unknown",
+      updatedAt: yamlData.updatedAt || "unknown",
     },
   };
+}
+
+export async function getReadBySlug(
+  folderPath: string,
+  slug: string
+): Promise<IRead | null> {
+  const allReads = await getAllReadMetaData(folderPath);
+  const readMeta = allReads.find((r) => r.slug === slug);
+  if (!readMeta) return null;
+  return getReadContent(folderPath, readMeta.filename);
 }

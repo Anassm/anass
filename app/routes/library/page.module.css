@@ -1,3 +1,50 @@
 .container {
+  display: flex;
+  gap: 1rem;
+}
+
+.container canvas {
   height: 100vh;
+}
+
+@media (max-width: 1300px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+}
+
+.canvas {
+  flex: 2;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 5rem 5rem 0rem 5rem;
+  flex: 1;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.read {
+}
+
+.read h2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.read a {
+  display: inline-block;
+  width: auto;
+  background: #1764a3;
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.read a:hover {
+  background: #0a4474;
+  transition: 0.1s ease;
 }
