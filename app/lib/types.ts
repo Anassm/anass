@@ -17,7 +17,8 @@ export interface IRead {
   metadata?: {
     tags?: string[];
     cluster?: string;
-    references?: string[];
+    core?: string[];
+    reference?: string[];
     createdAt?: string;
     updatedAt?: string;
   };
@@ -28,26 +29,23 @@ export interface INode {
   type: IRead["type"];
   navigation: string;
   cluster?: string;
-  neighbors?: string[];
+  core?: string[];
+  reference?: string[];
+}
+
+export interface INodeWithPosition extends INode {
+  position: Vector3;
+  color: string;
 }
 
 export interface IEdge {
-  from: string;
-  to: string;
+  u: INode;
+  v: INode;
   type: "core" | "reference";
   directional: boolean;
 }
 
-// React Node component props
-export type NodeProps = {
-  node: INode;
-  position: Vector3;
-  color: string;
-};
-
-// React Edge component props
-export type EdgeProps = {
+export interface IEdgeWithPosition extends IEdge {
   start: Vector3;
   end: Vector3;
-  type: IEdge["type"];
-};
+}

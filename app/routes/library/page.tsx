@@ -50,7 +50,7 @@ export default function Library({ loaderData }: Route.ComponentProps) {
       <div className={`container--sidebar ${styles.container}`}>
         <div className={styles.list}>{allReads}</div>
         <Canvas className={styles.canvas}>
-          {/* <OrbitControls /> */}
+          <OrbitControls />
 
           <gridHelper
             args={[35, 5]}

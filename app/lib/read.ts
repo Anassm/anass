@@ -43,7 +43,8 @@ async function getMetaDataOnly(filePath: string): Promise<IRead> {
     metadata: {
       tags: yamlData.tags || [],
       cluster: yamlData.cluster || "",
-      references: yamlData.references || [],
+      core: yamlData.core || [],
+      reference: yamlData.reference || [],
       createdAt: yamlData.createdAt || "unknown",
       updatedAt: yamlData.createdAt || "unknown",
     },
@@ -78,7 +79,8 @@ export function getReadContent(folderPath: string, fileTitle: string): IRead {
     metadata: {
       tags: yamlData.tags || [],
       cluster: yamlData.cluster || "",
-      references: yamlData.references || [],
+      core: yamlData.core || [],
+      reference: yamlData.reference || [],
       createdAt: yamlData.createdAt || "unknown",
       updatedAt: yamlData.updatedAt || "unknown",
     },

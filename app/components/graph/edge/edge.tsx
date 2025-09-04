@@ -1,17 +1,16 @@
-import type { EdgeProps } from "~/lib/types";
+import { Line } from "@react-three/drei";
+import type { IEdgeWithPosition } from "~/lib/types";
 
-export default function Edge({ start, end, type }: EdgeProps) {
-  const vertices = new Float32Array([...start, ...end]);
-
+export default function Edge({ start, end, type }: IEdgeWithPosition) {
   const color =
     type === "core" ? "white" : type === "reference" ? "orange" : "gray";
 
   return (
-    <lineSegments>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[vertices, 3]} />
-      </bufferGeometry>
-      <lineBasicMaterial color={color} />
-    </lineSegments>
+    <Line
+      points={[start.toArray(), end.toArray()]}
+      color={color}
+      lineWidth={4}
+      dashed={false}
+    />
   );
 }

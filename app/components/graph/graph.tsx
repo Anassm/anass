@@ -1,5 +1,11 @@
 import Node from "./node/node";
-import type { INode, IRead } from "~/lib/types";
+import type {
+  IEdge,
+  IEdgeWithPosition,
+  INode,
+  INodeWithPosition,
+  IRead,
+} from "~/lib/types";
 import { Vector3 } from "three";
 import { useLibrary } from "~/routes/library/context";
 import Edge from "./edge/edge";
@@ -15,56 +21,80 @@ export default function Graph() {
     type: "root",
     navigation: "/library",
     cluster: undefined,
-    neighbors: [],
+    core: [],
+    reference: [],
   };
-  const nodes: INode[] = data.map((read) => ({
-    title: read.title,
-    type: read.type,
-    navigation: "/library/" + read.type + "/" + read.slug,
-    cluster: read.metadata?.cluster,
-    neighbors: [],
+
+  const nodes: INode[] = [
+    ...data.map((read) => ({
+      title: read.title,
+      type: read.type,
+      navigation: `/library/${read.type}/${read.slug}`,
+      cluster: read.metadata?.cluster,
+      core: read.metadata?.core ?? [],
+      reference: read.metadata?.reference ?? [],
+    })),
+    rootNode,
+  ];
+
+  const renderNodes: INodeWithPosition[] = nodes.map((node) => ({
+    ...node,
+    position: new Vector3(
+      Math.random() * width - width / 2,
+      Math.random() * height - height / 2,
+      -20
+    ),
+    color: node.type === "root" ? "purple" : "blue",
   }));
-  nodes.push(rootNode);
 
-  const displayNodes: React.ReactElement[] = nodes.map((node) => {
-    if (node.type === "root") {
-      return (
-        <React.Fragment key={node.title}>
-          <Node
-            key={node.title}
-            node={node}
-            position={
-              new Vector3(
-                Math.random() * width - width / 2,
-                Math.random() * height - height / 2,
-                -20
-              )
-            }
-            color="purple"
-          />
-        </React.Fragment>
-      );
-    }
+  const nodeMap = new Map<string, INodeWithPosition>();
+  renderNodes.forEach((node) => {
+    nodeMap.set(node.title, node);
+  });
 
-    return (
-      <Node
-        key={node.title}
-        node={node}
-        position={
-          new Vector3(
-            Math.random() * width - width / 2,
-            Math.random() * height - height / 2,
-            -20
-          )
-        }
-        color="blue"
-      />
-    );
+  const renderEdges: IEdgeWithPosition[] = [];
+
+  renderNodes.forEach((node) => {
+    // Core edges
+    node.core?.forEach((targetTitle) => {
+      const targetNode = nodeMap.get(targetTitle);
+      if (targetNode) {
+        renderEdges.push({
+          u: node,
+          v: targetNode,
+          type: "core",
+          directional: true,
+          start: node.position,
+          end: targetNode.position,
+        });
+      }
+    });
+
+    // Reference edges
+    node.reference?.forEach((targetTitle) => {
+      const targetNode = nodeMap.get(targetTitle);
+      if (targetNode) {
+        renderEdges.push({
+          u: node,
+          v: targetNode,
+          type: "reference",
+          directional: true,
+          start: node.position,
+          end: targetNode.position,
+        });
+      }
+    });
   });
 
   return (
     <>
-      <group>{displayNodes}</group>
+      {renderNodes.map((node) => (
+        <Node key={node.navigation} {...node} />
+      ))}
+
+      {renderEdges.map((edge, index) => (
+        <Edge key={index} {...edge} />
+      ))}
     </>
   );
 }

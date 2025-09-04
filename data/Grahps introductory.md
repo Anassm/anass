@@ -3,6 +3,7 @@ type: note
 createdAt: 10/08/2026 20:00:27
 title: Graphs Introductory
 tags: [learning]
+core: [This is a title for post number 2]
 cluster: "datastructures"
 ---
 
