@@ -1,7 +1,7 @@
 import { Line } from "@react-three/drei";
-import type { IEdgeWithPosition } from "~/lib/types";
+import type { IEdgeExtended } from "~/lib/types";
 
-export default function Edge({ start, end, type }: IEdgeWithPosition) {
+export default function Edge({ start, end, type }: IEdgeExtended) {
   const color =
     type === "core" ? "white" : type === "reference" ? "orange" : "gray";
 

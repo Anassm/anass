@@ -1,11 +1,7 @@
-import { Link, useNavigate, type RouteObject } from "react-router";
-import type { INodeWithPosition } from "~/lib/types";
+import { useNavigate } from "react-router";
+import type { INodeExtended } from "~/lib/types";
 
-export default function Node({
-  navigation,
-  position,
-  color,
-}: INodeWithPosition) {
+export default function Node({ navigation, position, color }: INodeExtended) {
   const navigate = useNavigate();
 
   return (

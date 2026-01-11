@@ -1,9 +1,9 @@
 import { useLibrary } from "~/routes/library/context";
-import Node from "./node";
 import Edge from "./edge";
+import Node from "./node";
 
-import { buildNodes, buildEdges } from "./graph.logic";
 import { applyRandomLayout } from "./graph.layout";
+import { buildEdges, buildNodes } from "./graph.logic";
 
 export default function Graph() {
   const data = useLibrary();
