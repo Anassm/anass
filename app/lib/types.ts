@@ -33,8 +33,9 @@ export interface INode {
   reference?: string[];
 }
 
-export interface INodeWithPosition extends INode {
+export interface INodeExtended extends INode {
   position: Vector3;
+  velocity?: Vector3;
   color: string;
 }
 
@@ -45,7 +46,7 @@ export interface IEdge {
   directional: boolean;
 }
 
-export interface IEdgeWithPosition extends IEdge {
+export interface IEdgeExtended extends IEdge {
   start: Vector3;
   end: Vector3;
 }
