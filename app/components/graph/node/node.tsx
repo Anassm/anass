@@ -10,7 +10,7 @@ export default function Node({
 
   return (
     <mesh position={position} onClick={() => navigate(navigation)}>
-      <sphereGeometry args={[2, 32, 32]} />
+      <sphereGeometry args={[1, 32, 32]} />
       <meshStandardMaterial color={color} />
     </mesh>
   );
