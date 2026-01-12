@@ -1,25 +1,51 @@
 import { useLibrary } from "~/routes/library/context";
-import Edge from "./edge";
 import Node from "./node";
 
-import { applyRandomLayout } from "./graph.layout";
+import { Line } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useRef, useState } from "react";
+import type { IEdgeExtended, INodeExtended } from "~/lib/types";
 import { buildEdges, buildNodes } from "./graph.logic";
 
 export default function Graph() {
   const data = useLibrary();
 
-  const nodes = buildNodes(data);
-  const positionedNodes = applyRandomLayout(nodes);
-  const edges = buildEdges(positionedNodes);
+  const physicsRef = useRef<{
+    nodes: INodeExtended[];
+    edges: IEdgeExtended[];
+  } | null>(null);
+
+  if (!physicsRef.current) {
+    const nodes: INodeExtended[] = buildNodes(data);
+    const edges: IEdgeExtended[] = buildEdges(nodes);
+
+    physicsRef.current = { nodes, edges };
+  }
+
+  const [, setTick] = useState(0); // <----
+  useFrame((_, delta) => {
+    const physics = physicsRef.current!;
+
+    physics.nodes.forEach((node) => {
+      node.position.x += 1;
+    });
+
+    setTick((tick) => tick + 1); // <----
+  });
 
   return (
     <>
-      {positionedNodes.map((node) => (
+      {physicsRef.current.nodes.map((node) => (
         <Node key={node.navigation} {...node} />
       ))}
 
-      {edges.map((edge, index) => (
-        <Edge key={index} {...edge} />
+      {physicsRef.current.edges.map((edge, index) => (
+        <Line
+          key={index}
+          points={[edge.u.position.clone(), edge.v.position.clone()]}
+          color={edge.type === "core" ? "white" : "orange"}
+          lineWidth={4}
+        />
       ))}
     </>
   );

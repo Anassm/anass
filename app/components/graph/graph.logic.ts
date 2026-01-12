@@ -1,22 +1,36 @@
+import { Vector3 } from "three";
 import type { INode, INodeExtended, IEdgeExtended, IRead } from "~/lib/types";
 
-export function buildNodes(data: IRead[]): INode[] {
-  const rootNode: INode = {
+export function buildNodes(data: IRead[]): INodeExtended[] {
+  const rootNode: INodeExtended = {
     title: "Library page",
     type: "root",
     navigation: "/library",
     cluster: undefined,
     core: [],
     reference: [],
+    position: new Vector3(
+      Math.random() * 20 - 10,
+      Math.random() * 20 - 10,
+      -20
+    ),
+    velocity: new Vector3(),
+    color: "purple",
   };
 
-  const contentNodes: INode[] = data.map((read) => ({
+  const contentNodes: INodeExtended[] = data.map((read) => ({
     title: read.title,
     type: read.type,
     navigation: `/library/${read.type}/${read.slug}`,
     cluster: read.metadata?.cluster,
     core: read.metadata?.core ?? [],
-    reference: read.metadata?.reference ?? [],
+    position: new Vector3(
+      Math.random() * 20 - 10,
+      Math.random() * 20 - 10,
+      -20
+    ),
+    velocity: new Vector3(),
+    color: "blue",
   }));
 
   return [...contentNodes, rootNode];

@@ -40,8 +40,8 @@ export interface INodeExtended extends INode {
 }
 
 export interface IEdge {
-  u: INode;
-  v: INode;
+  u: INodeExtended;
+  v: INodeExtended;
   type: "core" | "reference";
   directional: boolean;
 }
