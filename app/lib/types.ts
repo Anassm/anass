@@ -35,7 +35,7 @@ export interface INode {
 
 export interface INodeExtended extends INode {
   position: Vector3;
-  velocity?: Vector3;
+  velocity: Vector3;
   color: string;
 }
 
@@ -44,9 +44,4 @@ export interface IEdge {
   v: INodeExtended;
   type: "core" | "reference";
   directional: boolean;
-}
-
-export interface IEdgeExtended extends IEdge {
-  start: Vector3;
-  end: Vector3;
 }

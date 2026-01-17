@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import type { INode, INodeExtended, IEdgeExtended, IRead } from "~/lib/types";
+import type { IEdge, INodeExtended, IRead } from "~/lib/types";
 
 export function buildNodes(data: IRead[]): INodeExtended[] {
   const rootNode: INodeExtended = {
@@ -36,11 +36,11 @@ export function buildNodes(data: IRead[]): INodeExtended[] {
   return [...contentNodes, rootNode];
 }
 
-export function buildEdges(nodes: INodeExtended[]): IEdgeExtended[] {
+export function buildEdges(nodes: INodeExtended[]): IEdge[] {
   const nodeMap = new Map<string, INodeExtended>();
   nodes.forEach((node) => nodeMap.set(node.title, node));
 
-  const edges: IEdgeExtended[] = [];
+  const edges: IEdge[] = [];
 
   nodes.forEach((node) => {
     node.core?.forEach((targetTitle) => {
@@ -51,8 +51,6 @@ export function buildEdges(nodes: INodeExtended[]): IEdgeExtended[] {
           v: targetNode,
           type: "core",
           directional: true,
-          start: node.position,
-          end: targetNode.position,
         });
       }
     });
@@ -65,8 +63,6 @@ export function buildEdges(nodes: INodeExtended[]): IEdgeExtended[] {
           v: targetNode,
           type: "reference",
           directional: true,
-          start: node.position,
-          end: targetNode.position,
         });
       }
     });

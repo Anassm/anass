@@ -15,7 +15,11 @@ export default function Node({ navigation, position, color }: INodeExtended) {
   });
 
   return (
-    <mesh ref={meshRef} onClick={() => navigate(navigation)}>
+    <mesh
+      ref={meshRef}
+      onPointerDown={(e) => console.log(e)}
+      onClick={() => navigate(navigation)}
+    >
       <sphereGeometry args={[1, 32, 32]} />
       <meshStandardMaterial color={color} />
     </mesh>
