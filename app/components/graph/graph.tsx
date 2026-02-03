@@ -4,12 +4,17 @@ import Node from "./node";
 import { Line } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { Vector3 } from "three";
+import { Plane, Raycaster, Vector3 } from "three";
 import type { IEdge, INodeExtended } from "~/lib/types";
 import { buildEdges, buildNodes } from "./graph.logic";
 
 export default function Graph() {
   const data = useLibrary();
+
+  const plane = useRef(new Plane(new Vector3(0, 0, 1), 21.5)); // Should be 20
+  const raycaster = useRef(new Raycaster());
+  const dragging = useRef(false);
+  const selectedNode = useRef<INodeExtended | null>(null);
 
   const physicsRef = useRef<{
     nodes: INodeExtended[];
@@ -37,10 +42,23 @@ export default function Graph() {
   }
 
   const [tick, setTick] = useState(0); // <----
-  useFrame((_, delta) => {
+  useFrame(({ mouse, camera }) => {
     const physics = physicsRef.current!;
     const edges = physics.edges;
     const nodes = physics.nodes;
+
+    if (dragging.current && selectedNode.current) {
+      raycaster.current.setFromCamera(mouse, camera);
+      const intersection = raycaster.current.ray.intersectPlane(
+        plane.current,
+        new Vector3()
+      );
+
+      if (intersection) {
+        const target = new Vector3(intersection.x, intersection.y, -20);
+        selectedNode.current.position.lerp(target, 1);
+      }
+    }
 
     // DAMPING
     for (let i = 0; i < nodes.length; i++) {
@@ -55,14 +73,18 @@ export default function Graph() {
       const magnitude: number = direction.length();
       if (magnitude) {
         edges[e].u.velocity.sub(
-          direction.clone().multiplyScalar(
-            physics.springStiffness * (1 - physics.springLength / magnitude)
-          )
+          direction
+            .clone()
+            .multiplyScalar(
+              physics.springStiffness * (1 - physics.springLength / magnitude)
+            )
         );
         edges[e].v.velocity.add(
-          direction.clone().multiplyScalar(
-            physics.springStiffness * (1 - physics.springLength / magnitude)
-          )
+          direction
+            .clone()
+            .multiplyScalar(
+              physics.springStiffness * (1 - physics.springLength / magnitude)
+            )
         );
       }
     }
@@ -70,7 +92,9 @@ export default function Graph() {
     // SMALL SPRINGS BETWEEN ALL
     for (let i = 0; i < nodes.length; i++) {
       for (let n = 0; n < nodes.length; n++) {
-        const direction: Vector3 = nodes[n].position.clone().sub(nodes[i].position);
+        const direction: Vector3 = nodes[n].position
+          .clone()
+          .sub(nodes[i].position);
         const magnitude: number = direction.length();
         if (magnitude && magnitude < physics.smallSpringLength) {
           nodes[i].velocity.add(
@@ -99,10 +123,27 @@ export default function Graph() {
     setTick((tick) => tick + 1); // <----
   });
 
+  function handlePointerDown(node: INodeExtended) {
+    selectedNode.current = node;
+    dragging.current = true;
+  }
+
+  function handlePointerUp() {
+    dragging.current = false;
+    selectedNode.current = null;
+  }
+
   return (
     <>
       {physicsRef.current.nodes.map((node) => (
-        <Node key={node.navigation} {...node} />
+        <Node
+          key={node.navigation}
+          node={node}
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
+          raycaster={raycaster.current}
+          plane={plane.current}
+        />
       ))}
 
       {physicsRef.current.edges.map((edge, index) => (

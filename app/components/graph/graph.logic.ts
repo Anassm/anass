@@ -16,6 +16,7 @@ export function buildNodes(data: IRead[]): INodeExtended[] {
     ),
     velocity: new Vector3(),
     color: "purple",
+    isDragging: false,
   };
 
   const contentNodes: INodeExtended[] = data.map((read) => ({
@@ -31,6 +32,7 @@ export function buildNodes(data: IRead[]): INodeExtended[] {
     ),
     velocity: new Vector3(),
     color: "blue",
+    isDragging: false,
   }));
 
   return [...contentNodes, rootNode];

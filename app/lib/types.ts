@@ -37,6 +37,7 @@ export interface INodeExtended extends INode {
   position: Vector3;
   velocity: Vector3;
   color: string;
+  isDragging: boolean;
 }
 
 export interface IEdge {

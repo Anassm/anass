@@ -1,15 +1,13 @@
 import { Canvas, useThree } from "@react-three/fiber";
-import styles from "./page.module.css";
+import path from "path";
+import { useMemo } from "react";
+import { href, Link } from "react-router";
 import Graph from "~/components/graph/graph";
-import { OrbitControls } from "@react-three/drei";
-import type { Route } from "./+types/page";
 import { getAllReadMetaData } from "~/lib/read";
 import type { IRead } from "~/lib/types";
-import path from "path";
+import type { Route } from "./+types/page";
 import { LibraryProvider } from "./context";
-import { href, Link } from "react-router";
-import { useEffect, useMemo } from "react";
-import type { PerspectiveCamera } from "three";
+import styles from "./page.module.css";
 
 export async function loader() {
   return await getAllReadMetaData(path.join(process.cwd(), "data"));
@@ -61,7 +59,7 @@ export default function Library({ loaderData }: Route.ComponentProps) {
       <div className={`container--sidebar ${styles.container}`}>
         <div className={styles.list}>{allReads}</div>
         <Canvas className={styles.canvas}>
-          <OrbitControls />
+          {/* <OrbitControls /> */}
 
           <ResponsiveScene>
             <gridHelper
@@ -73,7 +71,7 @@ export default function Library({ loaderData }: Route.ComponentProps) {
             <Graph />
           </ResponsiveScene>
 
-          <ambientLight intensity={1.75} />
+          <ambientLight intensity={1} />
           <directionalLight intensity={10} color="white" position={[0, 0, 5]} />
         </Canvas>
       </div>
