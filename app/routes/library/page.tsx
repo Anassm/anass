@@ -8,21 +8,13 @@ import type { IRead } from "~/lib/types";
 import type { Route } from "./+types/page";
 import { LibraryProvider } from "./context";
 import styles from "./page.module.css";
+import { OrbitControls } from "@react-three/drei";
 
 export async function loader() {
   return await getAllReadMetaData(path.join(process.cwd(), "data"));
 }
 
 export default function Library({ loaderData }: Route.ComponentProps) {
-  function ResponsiveScene({ children }: { children: React.ReactNode }) {
-    const { size } = useThree();
-
-    // compute a scale factor based on the viewport width
-    const scale = useMemo(() => Math.min(size.width / 1200, 1), [size.width]);
-
-    return <group scale={[scale, scale, scale]}>{children}</group>;
-  }
-
   const allReads: React.ReactElement<IRead>[] = loaderData.map((read) => (
     <div key={read.filename} className={styles.read}>
       <header className={styles.header}>
@@ -57,19 +49,28 @@ export default function Library({ loaderData }: Route.ComponentProps) {
   return (
     <LibraryProvider value={loaderData}>
       <div className={`container--sidebar ${styles.container}`}>
-        <div className={styles.list}>{allReads}</div>
+        <div className={styles.list}>
+          <div className={styles.heading}>
+            <h1>All my posts</h1>
+            <div className={styles.filters}>
+              <label htmlFor="note">Note</label>
+              <input type="checkbox" />
+              <label htmlFor="blog">Blog</label>
+              <input type="checkbox" />
+            </div>
+          </div>
+          {allReads}
+        </div>
         <Canvas className={styles.canvas}>
-          {/* <OrbitControls /> */}
+          <OrbitControls enableRotate={false} />
 
-          <ResponsiveScene>
-            <gridHelper
-              args={[35, 5]}
-              rotation={[Math.PI / 1.95, 1.5, 0]}
-              position={[0, 0, -25]}
-            />
+          <gridHelper
+            args={[35, 5]}
+            rotation={[Math.PI / 1.95, 1.5, 0]}
+            position={[0, 0, -25]}
+          />
 
-            <Graph />
-          </ResponsiveScene>
+          <Graph />
 
           <ambientLight intensity={1} />
           <directionalLight intensity={10} color="white" position={[0, 0, 5]} />

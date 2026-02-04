@@ -2,8 +2,8 @@ import { useLibrary } from "~/routes/library/context";
 import Node from "./node";
 
 import { Line } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useRef, useState } from "react";
 import { Plane, Raycaster, Vector3 } from "three";
 import type { IEdge, INodeExtended } from "~/lib/types";
 import { buildEdges, buildNodes } from "./graph.logic";
@@ -11,7 +11,9 @@ import { buildEdges, buildNodes } from "./graph.logic";
 export default function Graph() {
   const data = useLibrary();
 
-  const plane = useRef(new Plane(new Vector3(0, 0, 1), 21.5)); // Should be 20
+  const { gl } = useThree();
+
+  const plane = useRef(new Plane(new Vector3(0, 0, 1), 20));
   const raycaster = useRef(new Raycaster());
   const dragging = useRef(false);
   const selectedNode = useRef<INodeExtended | null>(null);
@@ -126,11 +128,21 @@ export default function Graph() {
   function handlePointerDown(node: INodeExtended) {
     selectedNode.current = node;
     dragging.current = true;
+    gl.domElement.style.cursor = "grabbing";
   }
 
   function handlePointerUp() {
     dragging.current = false;
     selectedNode.current = null;
+    gl.domElement.style.cursor = "pointer";
+  }
+
+  function handlePointerOver() {
+    if (!dragging.current) gl.domElement.style.cursor = "pointer";
+  }
+
+  function handlePointerOut() {
+    if (!dragging.current) gl.domElement.style.cursor = "auto";
   }
 
   return (
@@ -141,8 +153,8 @@ export default function Graph() {
           node={node}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
-          raycaster={raycaster.current}
-          plane={plane.current}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
         />
       ))}
 

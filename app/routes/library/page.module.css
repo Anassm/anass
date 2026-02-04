@@ -48,3 +48,13 @@
   background: #0a4474;
   transition: 0.1s ease;
 }
+
+.heading h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+}
