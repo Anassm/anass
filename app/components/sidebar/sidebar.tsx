@@ -56,13 +56,13 @@ export default function SideBar() {
           <UpdateStatus />
         </span>
       </div>
-      <RxHamburgerMenu
+      {/* <RxHamburgerMenu
         size={60}
         className={styles.hamburger}
         onClick={() => {
           setIsOpen((prev) => !prev);
         }}
-      />
+      /> */}
     </>
   );
 }

@@ -12,7 +12,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className={`flex-center container--narrow ${styles.container}`}>
+    <div className={`flex-center container-sm ${styles.container}`}>
       <h1 className={styles.title}>Anass Moussadi</h1>
       <Socials />
       <div className={styles.latex}>

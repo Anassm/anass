@@ -24,6 +24,15 @@ div {
   font-size: inherit;
 }
 
+.root {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-container {
+  flex: 1;
+}
+
 /* Utility classes */
 .container {
   width: 100%;
@@ -31,19 +40,29 @@ div {
   margin-inline: auto;
 }
 
-.container--narrow {
+.container--sidebar {
+  margin-left: clamp(250px, 15vw, 300px);
+
+  /* width: clamp(600px, 70vw, 1200px);
+
+  margin-left: clamp(250px, 15vw, 300px);
+
+  margin-right: clamp(50px, 5vw, 100px); */
+}
+
+.container-sm {
   width: 100%;
   padding-inline: 1rem;
   margin-inline: auto;
 }
 
-.container--wide {
+.container-lg {
   width: 100%;
   padding-inline: 1rem;
   margin-inline: auto;
 }
 
-.full-width {
+.container-full {
   width: 100%;
   background-color: red; /* or whatever color */
   padding-block: 4rem;
@@ -54,11 +73,11 @@ div {
     max-width: 640px;
   }
 
-  .container--narrow {
+  .container-sm {
     max-width: 540px;
   }
 
-  .container--wide {
+  .container-lg {
     max-width: 800px;
   }
 }
@@ -68,11 +87,11 @@ div {
     max-width: 960px;
   }
 
-  .container--narrow {
+  .container-sm {
     max-width: 720px;
   }
 
-  .container--wide {
+  .container-lg {
     max-width: 1200px;
   }
 }
@@ -82,11 +101,11 @@ div {
     max-width: 1200px;
   }
 
-  .container--narrow {
+  .container-sm {
     max-width: 880px;
   }
 
-  .container--wide {
+  .container-lg {
     max-width: 1440px;
   }
 }
