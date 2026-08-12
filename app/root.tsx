@@ -30,14 +30,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="http://localhost:8097"></script>
         <Meta />
         <Links />
       </head>
       <body>
-        <SideBar />
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <div className="root">
+          <SideBar />
+          <div className="main-container">{children}</div>
+          <ScrollRestoration />
+          <Scripts />
+        </div>
       </body>
     </html>
   );

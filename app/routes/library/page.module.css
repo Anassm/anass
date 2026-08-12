@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  gap: 1rem;
+}
+
+.container canvas {
+  flex: 2;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+@media (max-width: 1300px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+}
+
+.canvas {
+  flex: 2;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0rem 3rem 5rem;
+  flex: 1;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.read h2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.read a:hover {
+  text-decoration: underline;
+}
+
+.heading h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+}
+
+.search {
+  margin-top: 3px;
+}
+
+.search:focus {
+  outline: none;
+  border: none;
+}
