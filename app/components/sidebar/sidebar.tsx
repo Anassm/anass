@@ -52,9 +52,9 @@ export default function SideBar() {
         <ul className={`flex-center ${styles.navigationGroup}`}>
           {navigationLinks}
         </ul>
-        {/* <span className={styles.github}>
+        <span className={styles.github}>
           <UpdateStatus />
-        </span> */}
+        </span>
       </div>
       {/* <RxHamburgerMenu
         size={60}

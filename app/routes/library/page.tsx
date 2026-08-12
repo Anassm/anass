@@ -1,6 +1,6 @@
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import path from "path";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { href, Link } from "react-router";
 import Graph from "~/components/graph/graph";
 import { getAllReadMetaData } from "~/lib/read";
@@ -15,33 +15,51 @@ export async function loader() {
 }
 
 export default function Library({ loaderData }: Route.ComponentProps) {
-  const allReads: React.ReactElement<IRead>[] = loaderData.map((read) => (
-    <div key={read.filename} className={styles.read}>
-      <header className={styles.header}>
-        <h2 className={styles.title}>
-          {read.title} | {read.type}
-        </h2>
-      </header>
+  const [search, setSearch] = useState<string>("");
+  const [filters, setFilters] = useState<string[]>([]);
+  const filteredReads = useMemo(() => {
+    if (filters.length === 0) return loaderData;
+    return loaderData.filter((read) => filters.includes(read.type));
+  }, [loaderData, filters]);
 
-      <div className={styles.meta}>
-        <span>
-          <b>Created:</b> {read.metadata?.createdAt}
-        </span>{" "}
-        <br />
-        <span>
-          <b>Cluster:</b> {read.metadata?.cluster}
-        </span>{" "}
-        <br />
-        <span>
-          <b>Tags:</b> {read.metadata?.tags}
-        </span>
-      </div>
+  function toggleFilter(type: string) {
+    setFilters((prev) =>
+      prev.includes(type)
+        ? prev.filter((filter) => filter !== type)
+        : [...prev, type],
+    );
+  }
 
+  const allReads: React.ReactElement<IRead>[] = filteredReads.map((read) => (
+    <div
+      key={read.filename}
+      className={styles.read}
+      style={{
+        color:
+          read.type == "note"
+            ? "#ac79ff"
+            : read.type == "blog"
+              ? "#d6af02"
+              : "#3d85f1",
+      }}
+    >
       <Link
-        to={href("/library/:type/:slug", { type: read.type, slug: read.slug })}
-        className={styles.link}
+        to={href("/library/:type/:slug", {
+          type: read.type,
+          slug: read.slug,
+        })}
       >
-        Read →
+        <header className={styles.header}>
+          <h2 className={styles.title}>
+            {read.title} | {read.type}
+          </h2>
+        </header>
+
+        <div className={styles.meta}>
+          <span>Created: {read.metadata?.createdAt}</span> <br />
+          <span>Cluster: {read.metadata?.cluster}</span> <br />
+          <span>Tags: {read.metadata?.tags}</span>
+        </div>
       </Link>
     </div>
   ));
@@ -53,22 +71,40 @@ export default function Library({ loaderData }: Route.ComponentProps) {
           <div className={styles.heading}>
             <h1>All my posts</h1>
             <div className={styles.filters}>
+              <span>Filter: </span>
               <label htmlFor="note">Note</label>
-              <input type="checkbox" />
+              <input
+                id="note"
+                type="checkbox"
+                checked={filters.includes("note")}
+                onChange={() => toggleFilter("note")}
+              />
               <label htmlFor="blog">Blog</label>
-              <input type="checkbox" />
+              <input
+                id="blog"
+                type="checkbox"
+                checked={filters.includes("blog")}
+                onChange={() => toggleFilter("blog")}
+              />
+              <label htmlFor="post">Post</label>
+              <input
+                id="post"
+                type="checkbox"
+                checked={filters.includes("post")}
+                onChange={() => toggleFilter("post")}
+              />
             </div>
+            <input
+              className={styles.search}
+              type="text"
+              placeholder="Search for posts..."
+            />
           </div>
           {allReads}
         </div>
-        <Canvas className={styles.canvas}>
-          <OrbitControls enableRotate={false} />
 
-          <gridHelper
-            args={[35, 5]}
-            rotation={[Math.PI / 1.95, 1.5, 0]}
-            position={[0, 0, -25]}
-          />
+        <Canvas className={styles.canvas}>
+          {/* <OrbitControls /> */}
 
           <Graph />
 
